@@ -33,10 +33,19 @@ cv.destroyAllWindows()
 #for i in range(0, imgsAcross):
 xOffset = 0
 yOffset = 0
-for i in range(0, imgsAcross):
-    img[ yOffset : yOffset + imgScaled.shape[0], xOffset * (i+1) : xOffset * (i+1) + imgScaled.shape[1]] = imgScaled
+# Insert first tiled image:
+img[yOffset : yOffset + imgScaled.shape[0], xOffset : xOffset + imgScaled.shape[1]] = imgScaled
 
-# Show tiled image
+# Insert rest of images:
+for i  in range(0, imgsDown):
+    for j in range(0, imgsAcross):
+
+        img[(i * int(imgTileHeight)) : (i * int(imgTileHeight)) + imgScaled.shape[0], ((j) * int(imgTileWidth)) : (j * int(imgTileWidth)) + imgScaled.shape[1] ] = imgScaled
+
+
+#Scale down large image to screen size
+img = cv.resize(img, [1920, 1080], interpolation = cv.INTER_AREA)
+
 cv.imshow('Tiled image', img)
 cv.waitKey(0)
 cv.destroyAllWindows()
